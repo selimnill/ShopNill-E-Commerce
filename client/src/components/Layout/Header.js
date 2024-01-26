@@ -1,57 +1,75 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-import { GiShoppingBag } from "react-icons/gi";
+import { BsFillHandbagFill } from "react-icons/bs";
 
 const Header = () => {
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <Link to="/" className="navbar-brand">
-              🛒 Ecommerce App
-            </Link>
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <NavLink to="/" className="nav-link ">
-                  Home
-                </NavLink>
+      <div className="navbar bg-base-100">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <NavLink to={"/"}>Home</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/category" className="nav-link ">
-                  Category
-                </NavLink>
+              <li>
+                <NavLink to={"/category"}>Category</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/register" className="nav-link">
-                  Register
-                </NavLink>
+              <li>
+                <NavLink to={"/register"}>Register</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/login" className="nav-link">
-                  Login
-                </NavLink>
+              <li>
+                <NavLink to={"/login"}>Login</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/cart" className="nav-link">
-                  Cart (0)
-                </NavLink>
+              <li>
+                <NavLink to={"/cart"}>Cart</NavLink>
               </li>
             </ul>
           </div>
+          <NavLink to={"/"} className="btn btn-ghost text-xl tracking-widest ">
+            <BsFillHandbagFill className="text-blue-800" /> ShopNill
+          </NavLink>
         </div>
-      </nav>
+
+        <div className="navbar-center  lg:flex navbar-end">
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <NavLink to={"/"}>Home</NavLink>
+            </li>
+            <li>
+              <NavLink to={"/category"}>Category</NavLink>
+            </li>
+            <li>
+              <NavLink to={"/register"}>Register</NavLink>
+            </li>
+            <li>
+              <NavLink to={"/login"}>Login</NavLink>
+            </li>
+            <li>
+              <NavLink to={"/cart"}>Cart</NavLink>
+            </li>
+          </ul>
+        </div>
+      </div>
     </>
   );
 };
