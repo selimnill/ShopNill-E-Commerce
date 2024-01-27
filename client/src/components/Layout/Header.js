@@ -1,8 +1,22 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { BsFillHandbagFill } from "react-icons/bs";
+import { useAuth } from "../../context/auth";
+import toast from "react-hot-toast";
 
 const Header = () => {
+  const [auth, setAuth] = useAuth();
+
+  const handleLogOut = () => {
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    localStorage.removeItem("auth");
+    toast.success("LogOut SuccessfullY.!");
+  };
+
   return (
     <>
       <div className="navbar bg-base-100">
@@ -38,12 +52,26 @@ const Header = () => {
               <li>
                 <NavLink to={"/category"}>Category</NavLink>
               </li>
-              <li>
-                <NavLink to={"/register"}>Register</NavLink>
-              </li>
-              <li>
-                <NavLink to={"/login"}>Login</NavLink>
-              </li>
+              {!auth.user ? (
+                <>
+                  <li>
+                    <NavLink to={"/register"}>Register</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to={"/login"}>Login</NavLink>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    onClick={handleLogOut}
+                    to={"/login"}
+                    className={"ml-4"}
+                  >
+                    LogOut
+                  </NavLink>
+                </>
+              )}
               <li>
                 <NavLink to={"/cart"}>Cart</NavLink>
               </li>
@@ -62,12 +90,26 @@ const Header = () => {
             <li>
               <NavLink to={"/category"}>Category</NavLink>
             </li>
-            <li>
-              <NavLink to={"/register"}>Register</NavLink>
-            </li>
-            <li>
-              <NavLink to={"/login"}>Login</NavLink>
-            </li>
+            {!auth.user ? (
+              <>
+                <li>
+                  <NavLink to={"/register"}>Register</NavLink>
+                </li>
+                <li>
+                  <NavLink to={"/login"}>Login</NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  onClick={handleLogOut}
+                  to={"/login"}
+                  className={"mt-2"}
+                >
+                  LogOut
+                </NavLink>
+              </>
+            )}
             <li>
               <NavLink to={"/cart"}>Cart</NavLink>
             </li>
