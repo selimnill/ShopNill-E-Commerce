@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import registerImg from "../../assets/Auth/registerimgg.png";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/auth/register`,
+        { name, email, password, phone, address }
+      );
+      if (res && res.data.success) {
+        toast.success(res.data.message);
+        navigate("/login");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong.!");
+    }
+  };
+
   return (
     <Layout title={"Register - ShopNill Store"}>
       <div>
@@ -12,37 +42,68 @@ const Register = () => {
               <img src={registerImg} />
             </div>
             <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-              <form className="card-body">
+              <form onSubmit={handleSubmit} className="card-body">
                 <h2 className="text-2xl font-bold text-center mb-2">
                   Register
                 </h2>
                 <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Email</span>
-                  </label>
                   <input
-                    type="email"
-                    placeholder="email"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Name"
                     className="input input-bordered"
                     required
                   />
                 </div>
                 <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Password</span>
-                  </label>
                   <input
-                    type="password"
-                    placeholder="password"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
                     className="input input-bordered"
                     required
                   />
-                  <label className="label">
-                    <a href="#" className="label-text-alt link link-hover">
-                      Forgot password?
-                    </a>
-                  </label>
                 </div>
+                <div className="form-control">
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    className="input input-bordered"
+                    required
+                  />
+                </div>
+                <div className="form-control">
+                  <input
+                    type="number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Phone"
+                    className="input input-bordered"
+                    required
+                  />
+                </div>
+                <div className="form-control">
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Address"
+                    className="input input-bordered"
+                    required
+                  />
+                </div>
+                <label className="label">
+                  <a href="#" className="label-text-alt">
+                    Already have an account{" "}
+                    <Link to="/login" className="font-bold link link-hover">
+                      Login
+                    </Link>
+                  </a>
+                </label>
                 <div className="form-control mt-6">
                   <button className="btn btn-primary">Register</button>
                 </div>

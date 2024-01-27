@@ -6,9 +6,13 @@ const Header = () => {
   return (
     <>
       <div className="navbar bg-base-100">
-        <div className="navbar-start">
+        <div className="navbar-start ">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost  lg:hidden"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -26,7 +30,7 @@ const Header = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu 3menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 "
             >
               <li>
                 <NavLink to={"/"}>Home</NavLink>
@@ -50,8 +54,8 @@ const Header = () => {
           </NavLink>
         </div>
 
-        <div className="navbar-center  lg:flex navbar-end">
-          <ul className="menu menu-horizontal px-1">
+        <div className="navbar-center  lg:flex navbar-end hidden">
+          <ul className="menu menu-horizontal px-1 ">
             <li>
               <NavLink to={"/"}>Home</NavLink>
             </li>
