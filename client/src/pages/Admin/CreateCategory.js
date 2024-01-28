@@ -1,7 +1,8 @@
 import React from "react";
+import Layout from "../../components/Layout/Layout";
 
 const CreateCategory = () => {
-  return <div>CreateCategory</div>;
+  return <Layout>CreateCategory</Layout>;
 };
 
 export default CreateCategory;
