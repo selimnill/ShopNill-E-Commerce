@@ -1,6 +1,7 @@
 import CategoryModel from "../models/CategoryModel.js";
 import slugify from "slugify";
 
+// create category
 export const createCategoryController = async (req, res) => {
   try {
     const { name } = req.body; // make sure to extract "name" from body;
@@ -33,6 +34,7 @@ export const createCategoryController = async (req, res) => {
   }
 };
 
+// update category
 export const updateCategoryController = async (req, res) => {
   try {
     const { name } = req.body;

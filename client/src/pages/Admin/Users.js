@@ -4,7 +4,7 @@ import AdminMenu from "../../components/AdminMenu";
 
 const Users = () => {
   return (
-    <Layout title={"Users Admin Dashboard - ShopNill Store"}>
+    <Layout title={"Users Dashboard - ShopNill Store"}>
       <div className="grid grid-cols-2">
         <div className="">
           <AdminMenu />
