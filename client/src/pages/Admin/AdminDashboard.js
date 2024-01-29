@@ -7,18 +7,16 @@ const AdminDashboard = () => {
   const [auth] = useAuth();
 
   return (
-    <Layout>
-      <div className="container-fluid m-3 p-3">
-        <div className="row">
-          <div className="col-md-3">
-            <AdminMenu />
-          </div>
-          <div className="col-md-9">
-            <div className="card w-75 p-3">
-              <h1 className="text-lg">Admin Name : {auth?.user?.name}</h1>
-              <h1 className="text-lg">Admin Email : {auth?.user?.email}</h1>
-              <h1 className="text-lg">Admin Contact : {auth?.user?.contact}</h1>
-            </div>
+    <Layout title={"Admin Dashboard - ShopNill Store"}>
+      <div className="grid grid-cols-2">
+        <div className="">
+          <AdminMenu />
+        </div>
+        <div className="ml-[-130px] mt-4">
+          <div className=" w-75 p-3">
+            <h1 className="text-lg">Admin Name : {auth?.user?.name}</h1>
+            <h1 className="text-lg">Admin Email : {auth?.user?.email}</h1>
+            <h1 className="text-lg">Admin Contact : {auth?.user?.contact}</h1>
           </div>
         </div>
       </div>
