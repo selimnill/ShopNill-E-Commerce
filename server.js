@@ -1,10 +1,11 @@
 import express from "express";
 import colors from "colors";
+import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
-import cors from "cors";
+import CategoryRoutes from "./routes/CategoryRoute.js";
 
 //configure env
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(cors());
 
 //routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/category", CategoryRoutes);
 
 //rest api
 app.get("/", (req, res) => {
