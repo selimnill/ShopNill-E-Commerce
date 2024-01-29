@@ -3,16 +3,41 @@ import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/AdminMenu";
 import axios from "axios";
 import toast from "react-hot-toast";
+import CategoryFrom from "../../components/Form/CategoryFrom";
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
+  const [name, setName] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/category/create-category`,
+        {
+          name,
+        }
+      );
+      if (data?.success) {
+        toast.success(`${name} is created`);
+        allCategory();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong in input form");
+    }
+  };
 
   // get all categories
   const allCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
-      if (data.success) {
-        setCategories(data);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/category/all-category`
+      );
+      if (data?.success) {
+        setCategories(data.category);
       }
     } catch (error) {
       console.log(error);
@@ -32,39 +57,59 @@ const CreateCategory = () => {
         </div>
         <div className="ml-[-130px] mt-10">
           <h1 className="text-center mb-4 font-bold">Manage Category</h1>
+          <div className="p-3">
+            <CategoryFrom
+              handleSubmit={handleSubmit}
+              value={name}
+              setValue={setName}
+            />
+          </div>
           <div>
             <div className="overflow-x-auto">
               <table className="table">
                 {/* head */}
                 <thead>
                   <tr>
-                    <th></th>
                     <th>Name</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {/* row 1 */}
-                  <tr>
-                    <th>1</th>
-                    <td>Cy Ganderton</td>
-                    <td>Quality Control Specialist</td>
-                  </tr>
-                  {/* row 2 */}
-                  <tr>
-                    <th>2</th>
-                    <td>Hart Hagerty</td>
-                    <td>Desktop Support Technician</td>
-                  </tr>
-                  {/* row 3 */}
-                  <tr>
-                    <th>3</th>
-                    <td>Brice Swyre</td>
-                    <td>Tax Accountant</td>
-                  </tr>
+                  {categories?.map((category) => (
+                    <>
+                      <tr>
+                        <td key={category._id}>{category?.name}</td>
+                        <td>
+                          <button
+                            htmlFor="edit-button"
+                            className="btn btn-primary w-20 font-semibold"
+                          >
+                            Edit
+                          </button>
+                          <button className="btn bg-red-700 hover:bg-red-800 ml-2 font-semibold text-white">
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </>
+                  ))}
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </div>
+      {/* Put this part before </body> tag */}
+      <input type="checkbox" id="edit-button" className="modal-toggle" />
+      <div className="modal" role="dialog">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">This modal works with a hidden checkbox!</p>
+          <div className="modal-action">
+            <label htmlFor="my_modal_6" className="btn">
+              Close!
+            </label>
           </div>
         </div>
       </div>
