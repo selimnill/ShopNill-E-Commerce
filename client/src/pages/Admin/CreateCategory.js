@@ -8,6 +8,8 @@ import CategoryFrom from "../../components/Form/CategoryFrom";
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
+  const [selected, setSelected] = useState(null);
+  const [updatedName, setUpdatedName] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +51,16 @@ const CreateCategory = () => {
     allCategory();
   }, []);
 
+  // update category
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    try {
+      console.log(e);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <Layout title={"Create Category admin - ShopNill Store"}>
       <div className="grid grid-cols-2">
@@ -81,13 +93,17 @@ const CreateCategory = () => {
                       <tr>
                         <td key={category._id}>{category?.name}</td>
                         <td>
-                          <button
-                            htmlFor="edit-button"
+                          <label
+                            htmlFor="edit_button"
                             className="btn btn-primary w-20 font-semibold"
+                            onClick={() => setUpdatedName(category?.name)}
                           >
                             Edit
-                          </button>
-                          <button className="btn bg-red-700 hover:bg-red-800 ml-2 font-semibold text-white">
+                          </label>
+                          <button
+                            htmlFor="edit_button"
+                            className="btn bg-red-700 hover:bg-red-800 ml-2 font-semibold text-white"
+                          >
                             Delete
                           </button>
                         </td>
@@ -100,14 +116,16 @@ const CreateCategory = () => {
           </div>
         </div>
       </div>
-      {/* Put this part before </body> tag */}
-      <input type="checkbox" id="edit-button" className="modal-toggle" />
+      <input type="checkbox" id="edit_button" className="modal-toggle" />
       <div className="modal" role="dialog">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">This modal works with a hidden checkbox!</p>
+          <CategoryFrom
+            value={updatedName}
+            setValue={setUpdatedName}
+            handleSubmit={handleUpdate}
+          />
           <div className="modal-action">
-            <label htmlFor="my_modal_6" className="btn">
+            <label htmlFor="edit_button" className="btn">
               Close!
             </label>
           </div>
