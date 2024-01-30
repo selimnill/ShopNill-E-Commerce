@@ -10,6 +10,7 @@ const CreateCategory = () => {
   const [name, setName] = useState("");
   const [selected, setSelected] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +23,7 @@ const CreateCategory = () => {
       );
       if (data?.success) {
         toast.success(`${name} is created`);
+        setName("");
         allCategory();
       } else {
         toast.error(data.message);
@@ -52,10 +54,41 @@ const CreateCategory = () => {
   }, []);
 
   // update category
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      console.log(e);
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/category/update-category/${selected?._id}`,
+        { name: updatedName }
+      );
+      if (data.success) {
+        toast.success(`${updatedName} is updated`);
+        setSelected(null);
+        setUpdatedName("");
+        setOpenModal(false);
+        allCategory();
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
+  // delete category
+  const handleDelete = async (pid, name) => {
+    try {
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/category/delete-category/${pid}`,
+        { name: updatedName }
+      );
+      if (data?.success) {
+        toast.success(`${name} is deleted`);
+        console.log(name);
+        allCategory();
+      } else {
+        toast.error(data?.message);
+      }
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -87,7 +120,7 @@ const CreateCategory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* row 1 */}
+                  {/* row  */}
                   {categories?.map((category) => (
                     <>
                       <tr>
@@ -96,12 +129,18 @@ const CreateCategory = () => {
                           <label
                             htmlFor="edit_button"
                             className="btn btn-primary w-20 font-semibold"
-                            onClick={() => setUpdatedName(category?.name)}
+                            onClick={() => {
+                              setUpdatedName(category?.name);
+                              setSelected(category);
+                              setOpenModal(true);
+                            }}
                           >
                             Edit
                           </label>
                           <button
-                            htmlFor="edit_button"
+                            onClick={() => {
+                              handleDelete(category?._id, category?.name);
+                            }}
                             className="btn bg-red-700 hover:bg-red-800 ml-2 font-semibold text-white"
                           >
                             Delete
@@ -123,6 +162,7 @@ const CreateCategory = () => {
             value={updatedName}
             setValue={setUpdatedName}
             handleSubmit={handleUpdate}
+            setOpenModal={setOpenModal}
           />
           <div className="modal-action">
             <label htmlFor="edit_button" className="btn">

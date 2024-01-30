@@ -1,11 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CategoryFrom = ({ handleSubmit, value, setValue }) => {
-  {
-    /* The button to open modal */
-  }
-  <label className="btn">open modal</label>;
-
+const CategoryFrom = ({ handleSubmit, value, setValue, setOpenModal }) => {
   return (
     <>
       <div className="hero  bg-base-200">
