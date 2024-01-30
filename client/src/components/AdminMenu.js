@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { PiShieldPlusFill } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa";
+import { FaProductHunt } from "react-icons/fa6";
 
 const AdminMenu = () => {
   return (
@@ -34,8 +35,19 @@ const AdminMenu = () => {
           </li>
           <li>
             <a>
+              <FaProductHunt size={18} />
+              <NavLink className={"font-bold"} to="/dashboard/admin/products">
+                Products
+              </NavLink>
+            </a>
+          </li>
+          <li>
+            <a>
               <FaUsers size={18} />
-              <NavLink className={"font-bold"} to="/dashboard/admin/users">
+              <NavLink
+                className={"font-bold active:bg-blue-600"}
+                to="/dashboard/admin/users"
+              >
                 Users
               </NavLink>
             </a>
