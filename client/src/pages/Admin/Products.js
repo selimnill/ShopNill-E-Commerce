@@ -8,12 +8,13 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   // all products
-  const getAllProducts = () => {
+  const getAllProducts = async () => {
     try {
-      const { data } = axios.get(
+      const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/get-product`
       );
       setProducts(data?.products);
+      console.log(data.products);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -23,33 +24,33 @@ const Products = () => {
   useEffect(() => {
     getAllProducts();
   }, []);
-
   return (
     <Layout title={"Products Dashboard - ShopNill Store"}>
-      <div className="grid grid-cols-2 ">
+      <div className="grid grid-cols-4 ">
         <div className="">
           <AdminMenu />
         </div>
-        <div className="ml-[-130px] mt-4">
-          <h1 className="text-center">All Products List</h1>
-          {products?.map((p) => (
-            <div className="card w-96 bg-base-100 shadow-xl">
-              <figure>
-                <img src={p?.photo} alt={p?.name} />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">
-                  {p?.name}
-                  <div className="badge badge-secondary">NEW</div>
-                </h2>
-                <p>{p?.description}</p>
-                <div className="card-actions justify-end">
-                  <div className="badge badge-outline">Fashion</div>
-                  <div className="badge badge-outline">Products</div>
+        <div>
+          <h1 className="text-center text-xl font-bold mt-8 mb-8">
+            All Products List
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-64 lg:ml-[100px] mt-7">
+            {products.map((p) => (
+              <div className="card w-52 bg-base-100 shadow-xl">
+                <figure className="px-10 pt-10">
+                  <img
+                    className="rounded-xl h-28 w-28"
+                    src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
+                    alt={p.name}
+                  />
+                </figure>
+                <div className="card-body items-center text-center">
+                  <h2 className="card-title">{p.name}</h2>
+                  <p>{p?.description}</p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </Layout>
