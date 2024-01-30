@@ -7,8 +7,8 @@ import { FaUsers } from "react-icons/fa";
 const AdminMenu = () => {
   return (
     <>
-      <div className="text-center p-4 m-4">
-        <ul className="menu bg-base-200 w-56 rounded-box">
+      <div className="text-center active p-4 m-4">
+        <ul className="menu bg-base-200 active w-56 rounded-box">
           <h4 className="text-lg mb-4 font-bold">Admin Panel</h4>
           <li>
             <a>
