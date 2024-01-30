@@ -41,7 +41,7 @@ const CreateCategory = () => {
         `${process.env.REACT_APP_API}/api/v1/category/all-category`
       );
       if (data?.success) {
-        setCategories(data.category);
+        setCategories(data?.category);
       }
     } catch (error) {
       console.log(error);
