@@ -1,6 +1,7 @@
 import express from "express";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import {
+  ProductCategoryController,
   createProductController,
   deleteProductController,
   getProductController,
@@ -9,6 +10,8 @@ import {
   productFilterController,
   productPhotoController,
   productlistController,
+  searchProductController,
+  similerProductController,
   updateProductController,
 } from "../controllers/ProductController.js";
 import ExpressFormidable from "express-formidable";
@@ -54,5 +57,15 @@ router.get("/product-count", productCountController);
 
 // product per page
 router.get("/product-list/:page", productlistController);
+
+// search products
+
+router.get("/search/:keyword", searchProductController);
+
+// similer product
+router.get("/related-product/:pid/:cid", similerProductController);
+
+// products by category
+router.get("/product-category/:slug", ProductCategoryController);
 
 export default router;

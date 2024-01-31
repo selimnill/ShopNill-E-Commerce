@@ -4,6 +4,7 @@ import { useAuth } from "../context/auth";
 import axios from "axios";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [auth, setAuth] = useAuth();
@@ -14,6 +15,8 @@ const HomePage = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   // get all categories
   const allCategory = async () => {
@@ -36,12 +39,36 @@ const HomePage = () => {
   // get all product
   const getAllProducts = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
+        // `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
         `${process.env.REACT_APP_API}/api/v1/product/get-product`
       );
+      setLoading(false);
       setProducts(data?.products);
     } catch (error) {
+      setLoading(false);
       console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (page === 1) return;
+    loadMore();
+  }, [page]);
+
+  // load more
+  const loadMore = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+      );
+      setLoading(false);
+      setProducts([...products, ...data?.products]);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -93,8 +120,6 @@ const HomePage = () => {
   useEffect(() => {
     getTotal();
   }, []);
-
-  console.log(total);
 
   return (
     <Layout title={"Home - ShopNill Store"}>
@@ -157,7 +182,10 @@ const HomePage = () => {
                     <b>$ {p?.price}</b>
                   </p>
                   <div className="flex justify-center items-center gap-1 bottom-1">
-                    <button className="btn btn-primary btn-xs">
+                    <button
+                      className="btn btn-primary btn-xs"
+                      onClick={() => navigate(`/product/${p?.slug}`)}
+                    >
                       More Details
                     </button>
                     <button className="btn btn-primary btn-xs">
@@ -168,16 +196,16 @@ const HomePage = () => {
               </div>
             ))}
           </div>
-          <div className="m-2 p-3">
+          <div className="m-2 p-3 text-center">
             {products && products.length < total && (
               <button
-                className="btn btn-warning"
+                className="btn btn-success"
                 onClick={(e) => {
                   e.preventDefault();
                   setPage(page + 1);
                 }}
               >
-                {loading ? "Loading" : "Loadmore"}
+                {loading ? "Loading......" : "Loadmore"}
               </button>
             )}
           </div>

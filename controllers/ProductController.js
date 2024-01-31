@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import ProductModel from "../models/ProductModel.js";
 import fs from "fs";
+import CategoryModel from "../models/CategoryModel.js";
 
 // create product controller
 export const createProductController = async (req, res) => {
@@ -251,7 +252,8 @@ export const productlistController = async (req, res) => {
     const page = req.params.page ? req.params.page : 1;
     const products = await ProductModel.find({})
       .select("-photo")
-      .skip((page - 1 * perPage).limit(perPage))
+      .skip((page - 1) * perPage)
+      .limit(perPage)
       .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
@@ -263,6 +265,72 @@ export const productlistController = async (req, res) => {
       success: false,
       error,
       message: "Error in product per pages",
+    });
+  }
+};
+
+// Search Product Controller
+export const searchProductController = async (req, res) => {
+  try {
+    const { keyword } = req.params;
+    const result = await ProductModel.find({
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ],
+    }).select("-photo");
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in Search Product Controller",
+    });
+  }
+};
+
+// Similar Products Controller
+export const similerProductController = async (req, res) => {
+  try {
+    const { pid, cid } = req.params;
+    const products = await ProductModel.find({
+      category: cid,
+      _id: { $ne: pid }, // ne means not include it
+    })
+      .select("-photo")
+      .limit(3)
+      .populate("category");
+    res.status(200).send({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while getting Similar Products",
+    });
+  }
+};
+
+// Products by category
+export const ProductCategoryController = async (req, res) => {
+  try {
+    const category = await CategoryModel.findOne({ slug: req.params.slug });
+    const products = await ProductModel.find({ category }).populate("category");
+    res.status(200).send({
+      success: true,
+      category,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while getting Products by category",
     });
   }
 };

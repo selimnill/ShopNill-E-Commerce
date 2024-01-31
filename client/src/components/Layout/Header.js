@@ -3,9 +3,13 @@ import { NavLink, Link } from "react-router-dom";
 import { BsFillHandbagFill } from "react-icons/bs";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
+import SearchInput from "../Form/SearchInput";
+import useCategory from "../../hooks/useCategory";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
+
+  const categories = useCategory();
 
   const handleLogOut = () => {
     setAuth({
@@ -20,7 +24,7 @@ const Header = () => {
   return (
     <>
       <div className="navbar bg-base-100">
-        <div className="navbar-start ">
+        <div className=" ">
           <div className="dropdown">
             <div
               tabIndex={0}
@@ -44,14 +48,24 @@ const Header = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu 3menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 "
+              className="menu 3menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-72 "
             >
               <li>
                 <NavLink to={"/"}>Home</NavLink>
               </li>
               <li>
-                <NavLink to={"/category"}>Category</NavLink>
+                <details>
+                  <summary>Categories</summary>
+                  <ul className="p-2 bg-base-100 rounded-t-none w-64">
+                    {categories?.map((cat) => (
+                      <li key={cat?._id}>
+                        <NavLink to={"/categories"}>{cat?.name}</NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               </li>
+              <SearchInput className="w-52 border-gray-400" />
               {!auth.user ? (
                 <>
                   <li>
@@ -95,18 +109,38 @@ const Header = () => {
               </li>
             </ul>
           </div>
-          <NavLink to={"/"} className="btn btn-ghost text-xl tracking-widest ">
+          <NavLink
+            to={"/"}
+            className="btn btn-ghost text-xl tracking-widest border-none hover:none  "
+          >
             <BsFillHandbagFill className="text-blue-800" /> ShopNill
           </NavLink>
         </div>
 
-        <div className="navbar-center  lg:flex navbar-end hidden">
+        <div className=" justify-center  lg:flex text-center hidden">
+          <SearchInput />
           <ul className="menu menu-horizontal px-1 ">
             <li>
               <NavLink to={"/"}>Home</NavLink>
             </li>
             <li>
-              <NavLink to={"/category"}>Category</NavLink>
+              <details>
+                <summary>
+                  <Link to={"/categories"}>Categories</Link>
+                </summary>
+                <ul className="p-2 bg-base-100 rounded-t-none w-64">
+                  <li>
+                    <Link to={"/categories"}>All Categories</Link>
+                  </li>
+                  {categories?.map((cat) => (
+                    <li key={cat?._id}>
+                      <NavLink to={`/category/${cat?.slug}`}>
+                        {cat?.name}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </details>
             </li>
             {!auth.user ? (
               <>
