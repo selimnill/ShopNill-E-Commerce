@@ -11,6 +11,9 @@ const HomePage = () => {
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   // get all categories
   const allCategory = async () => {
@@ -54,8 +57,44 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getAllProducts();
+    if (!checked.length || !radio.length) getAllProducts();
+    // eslint-disable-next-line
+  }, [checked.length, radio.length]);
+
+  useEffect(() => {
+    if (checked.length || radio.length) filterProduct();
+  }, [checked, radio]);
+
+  // get filtered products
+  const filterProduct = async () => {
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/product/product-filters`,
+        { checked, radio }
+      );
+      setProducts(data?.products);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // get total count product
+  const getTotal = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/product-count`
+      );
+      setTotal(data?.total);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTotal();
   }, []);
+
+  console.log(total);
 
   return (
     <Layout title={"Home - ShopNill Store"}>
@@ -85,9 +124,16 @@ const HomePage = () => {
               ))}
             </Radio.Group>
           </div>
+          <div className="flex flex-column ml-5">
+            <button
+              className="btn bg-red-500 hover:bg-red-800 text-white font-semibold mt-5"
+              onClick={() => window.location.reload()}
+            >
+              RESET FILTERS
+            </button>
+          </div>
         </div>
         <div className="col-span-3">
-          {JSON.stringify(radio, null, 4)}
           <h1 className="text-center mt-4 mb-4 font-bold">All Products</h1>
           <h1 className="ml-5 font-bold mb-3">Products</h1>
           <div className="flex flex-wrap">
@@ -121,6 +167,19 @@ const HomePage = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="m-2 p-3">
+            {products && products.length < total && (
+              <button
+                className="btn btn-warning"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPage(page + 1);
+                }}
+              >
+                {loading ? "Loading" : "Loadmore"}
+              </button>
+            )}
           </div>
         </div>
       </div>
