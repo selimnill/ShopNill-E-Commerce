@@ -72,7 +72,9 @@ export const CreateProduct = () => {
           <AdminMenu />
         </div>
         <div className="ml-[-130px] mt-10">
-          <h1>Create Product</h1>
+          <h1 className="w-75 font-bold text-xl text-center mb-4">
+            Create Product
+          </h1>
           <div className="m-1 w-75">
             <Select
               placeholder="Select a category"

@@ -17,6 +17,8 @@ const UpdateProducts = () => {
   const [category, setCategory] = useState("");
   const [quantity, setquantity] = useState("");
   const [shipping, setShipping] = useState("");
+  const [id, setId] = useState("");
+
   const params = useParams();
   const navigate = useNavigate();
 
@@ -26,11 +28,13 @@ const UpdateProducts = () => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
       );
+      setId(data?.product?._id);
       setName(data?.product?.name);
       setDescription(data?.product?.description);
       setPrice(data?.product?.price);
       setquantity(data?.product?.quantity);
       setShipping(data?.product?.shipping);
+      setCategory(data?.product?.category?._id);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +65,7 @@ const UpdateProducts = () => {
   }, []);
 
   // create product function
-  const handleCreate = async (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     try {
       const productData = new FormData();
@@ -69,16 +73,16 @@ const UpdateProducts = () => {
       productData.append("description", description);
       productData.append("price", price);
       productData.append("quantity", quantity);
-      productData.append("photo", photo);
+      photo && productData.append("photo", photo);
       productData.append("category", category);
-      const { data } = axios.post(
-        `${process.env.REACT_APP_API}/api/v1/product/create-product`,
+      const { data } = axios.put(
+        `${process.env.REACT_APP_API}/api/v1/product/update-product/${id}`,
         productData
       );
       if (data?.success) {
         toast.error(data?.message);
-        toast.success("Product created successfully");
       } else {
+        toast.success("Product created successfully");
         navigate("/dashboard/admin/products");
       }
     } catch (error) {
@@ -86,6 +90,24 @@ const UpdateProducts = () => {
       toast.error("Something went wrong");
     }
   };
+
+  //product delete
+  const handleDelete = async () => {
+    try {
+      // prevent delete button
+      let answer = window.prompt("Are you sure want to delete this product?");
+      if (!answer) return;
+      const { data } = axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/product/delete-product/${id}`
+      );
+      toast.success("Product Deleted Successfully");
+      navigate("/dashboard/admin/products");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong, Please try again.");
+    }
+  };
+
   return (
     <Layout title={"Update Product admin - ShopNill Store"}>
       <div className="grid grid-cols-2">
@@ -105,6 +127,7 @@ const UpdateProducts = () => {
               onChange={(value) => {
                 setCategory(value);
               }}
+              value={category}
             >
               {categories?.map((cat) => (
                 <Option key={cat._id} value={cat._id}>
@@ -128,11 +151,20 @@ const UpdateProducts = () => {
                 </label>
               </div>
               <div className="mb-3">
-                {photo && (
+                {photo ? (
                   <div className="text-center">
                     <img
                       required
                       src={URL.createObjectURL(photo)}
+                      alt="product_photo"
+                      className="h-32 border-info border-2 rounded-lg ml-2"
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <img
+                      required
+                      src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${id}`}
                       alt="product_photo"
                       className="h-32 border-info border-2 rounded-lg ml-2"
                     />
@@ -188,6 +220,7 @@ const UpdateProducts = () => {
               onChange={(value) => {
                 setShipping(value);
               }}
+              value={shipping ? "Yes" : "No"}
             >
               <Option className="border-none" value="0">
                 No
@@ -200,9 +233,17 @@ const UpdateProducts = () => {
           <div className="mb-3 text-center w-75">
             <button
               className="btn  font-bold bg-green-500 hover:bg-green-600 hover:text-white"
-              onClick={handleCreate}
+              onClick={handleUpdate}
             >
               UPDATE PRODUCT
+            </button>
+          </div>
+          <div className="mb-3 text-center w-75">
+            <button
+              className="btn  font-bold bg-red-500 hover:bg-red-600 hover:text-white"
+              onClick={handleDelete}
+            >
+              DELETE PRODUCT
             </button>
           </div>
         </div>

@@ -15,7 +15,6 @@ const Products = () => {
         `${process.env.REACT_APP_API}/api/v1/product/get-product`
       );
       setProducts(data?.products);
-      console.log(data.products);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
