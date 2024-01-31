@@ -4,11 +4,11 @@ import AdminMenu from "../../components/AdminMenu";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Select } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { Option } = Select;
 
-export const CreateProduct = () => {
+const UpdateProducts = () => {
   const [categories, setCategories] = useState([]);
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
@@ -17,7 +17,29 @@ export const CreateProduct = () => {
   const [category, setCategory] = useState("");
   const [quantity, setquantity] = useState("");
   const [shipping, setShipping] = useState("");
+  const params = useParams();
   const navigate = useNavigate();
+
+  //   get single product
+  const getSingleProduct = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`
+      );
+      setName(data?.product?.name);
+      setDescription(data?.product?.description);
+      setPrice(data?.product?.price);
+      setquantity(data?.product?.quantity);
+      setShipping(data?.product?.shipping);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSingleProduct();
+    // eslint-disable-next-line
+  }, []);
 
   // get all category;
   const allCategory = async () => {
@@ -64,18 +86,20 @@ export const CreateProduct = () => {
       toast.error("Something went wrong");
     }
   };
-
   return (
-    <Layout title={"Create Product admin - ShopNill Store"}>
+    <Layout title={"Update Product admin - ShopNill Store"}>
       <div className="grid grid-cols-2">
         <div className="">
           <AdminMenu />
         </div>
         <div className="ml-[-130px] mt-10">
-          <h1>Create Product</h1>
+          <h1 className="text-center font-bold w-75 mb-4 text-xl">
+            Update Product
+          </h1>
           <div className="m-1 w-75">
             <Select
               placeholder="Select a category"
+              required
               showSearch
               className="form-select mb-3 border-none h-14 input-primary"
               onChange={(value) => {
@@ -107,9 +131,10 @@ export const CreateProduct = () => {
                 {photo && (
                   <div className="text-center">
                     <img
+                      required
                       src={URL.createObjectURL(photo)}
                       alt="product_photo"
-                      className="h-32  border-info border-2 rounded-lg ml-2"
+                      className="h-32 border-info border-2 rounded-lg ml-2"
                     />
                   </div>
                 )}
@@ -120,6 +145,7 @@ export const CreateProduct = () => {
                 type="text"
                 value={name}
                 placeholder="Write a name"
+                required
                 className="form-control input input-bordered input-info w-full "
                 onChange={(e) => setName(e.target.value)}
               />
@@ -129,6 +155,7 @@ export const CreateProduct = () => {
                 type="text"
                 value={description}
                 placeholder="Write a description"
+                required
                 className="form-control textarea textarea-info w-full"
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -138,6 +165,7 @@ export const CreateProduct = () => {
                 type="number"
                 value={price}
                 placeholder="Write a price"
+                required
                 className="form-control input input-bordered input-info w-full"
                 onChange={(e) => setPrice(e.target.value)}
               />
@@ -147,12 +175,14 @@ export const CreateProduct = () => {
                 type="number"
                 value={quantity}
                 placeholder="Write a quantity"
+                required
                 className="form-control input input-bordered input-info w-full"
                 onChange={(e) => setquantity(e.target.value)}
               />
             </div>
             <Select
               placeholder="Select shippping"
+              required
               showSearch
               className="form-select mb-3 border-none h-14 w-full"
               onChange={(value) => {
@@ -172,7 +202,7 @@ export const CreateProduct = () => {
               className="btn  font-bold bg-green-500 hover:bg-green-600 hover:text-white"
               onClick={handleCreate}
             >
-              CREATE PRODUCT
+              UPDATE PRODUCT
             </button>
           </div>
         </div>
@@ -180,3 +210,5 @@ export const CreateProduct = () => {
     </Layout>
   );
 };
+
+export default UpdateProducts;
