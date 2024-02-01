@@ -180,7 +180,7 @@ export const updateUserProfileController = async (req, res) => {
       req.user?._id,
       {
         name: name || user?.name,
-        password: password || user?.password,
+        password: hashedPassword || user?.password,
         phone: phone || user?.phone,
         address: address || user?.address,
       },

@@ -67,7 +67,6 @@ const Profile = () => {
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Name"
                         className="input border-none"
-                        required
                       />
                     </div>
                     <div className="form-control">
@@ -78,7 +77,6 @@ const Profile = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
                         className="input border-none"
-                        required
                       />
                     </div>
                     <div className="form-control">
@@ -88,7 +86,6 @@ const Profile = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Password"
                         className="input border-none"
-                        required
                       />
                     </div>
                     <div className="form-control">
@@ -98,7 +95,6 @@ const Profile = () => {
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="Phone"
                         className="input border-none"
-                        required
                       />
                     </div>
                     <div className="form-control">
@@ -108,7 +104,6 @@ const Profile = () => {
                         onChange={(e) => setAddress(e.target.value)}
                         placeholder="Address"
                         className="input border-none"
-                        required
                       />
                     </div>
                     <div className="form-control mt-6 border-none">
