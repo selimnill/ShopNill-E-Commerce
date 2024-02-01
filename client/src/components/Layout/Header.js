@@ -5,10 +5,11 @@ import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
 import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
+import { useCart } from "../../context/cart";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
-
+  const [cart] = useCart();
   const categories = useCategory();
 
   const handleLogOut = () => {
@@ -105,7 +106,7 @@ const Header = () => {
                 </>
               )}
               <li>
-                <NavLink to={"/cart"}>Cart</NavLink>
+                <NavLink to={"/cart"}>Cart(0)</NavLink>
               </li>
             </ul>
           </div>
@@ -181,7 +182,7 @@ const Header = () => {
               </>
             )}
             <li>
-              <NavLink to={"/cart"}>Cart</NavLink>
+              <NavLink to={"/cart"}>Cart({cart?.length})</NavLink>
             </li>
             <li>
               <label className="flex cursor-pointer gap-2">
