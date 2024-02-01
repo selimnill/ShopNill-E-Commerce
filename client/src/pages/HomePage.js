@@ -152,9 +152,7 @@ const HomePage = () => {
               ))}
             </Radio.Group>
           </div>
-          <div>
-            <h1>{process.env.REACT_APP_API}</h1>
-          </div>
+          <div></div>
           <div className="flex flex-column ml-5">
             <button
               className="btn bg-red-500 hover:bg-red-800 text-white font-semibold mt-5"

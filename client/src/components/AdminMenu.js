@@ -43,6 +43,14 @@ const AdminMenu = () => {
           </li>
           <li>
             <a>
+              <FaProductHunt size={18} />
+              <NavLink className={"font-bold"} to="/dashboard/admin/orders">
+                Orders
+              </NavLink>
+            </a>
+          </li>
+          <li>
+            <a>
               <FaUsers size={18} />
               <NavLink
                 className={"font-bold active:bg-blue-600"}
