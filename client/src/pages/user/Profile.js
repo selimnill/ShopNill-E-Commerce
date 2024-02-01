@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import registerImg from "../../assets/Auth/registerimgg.png";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Layout from "../../components/Layout/Layout";
 import UserMenu from "../../components/UserMenu";
+import { useAuth } from "../../context/auth";
 
 const Profile = () => {
+  const [auth, setAuth] = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,20 +17,34 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/auth/register`,
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/auth/profile`,
         { name, email, password, phone, address }
       );
-      if (res && res.data.success) {
-        toast.success(res.data.message);
+      if (data?.error) {
+        toast.error(data?.message);
       } else {
-        toast.error(res.data.message);
+        setAuth({ ...auth, user: data?.updatedUser });
+        let localstore = localStorage.getItem("auth");
+        localstore = JSON.parse(localstore);
+        localstore.user = data?.updatedUser;
+        localStorage.setItem("auth", JSON.stringify(localstore));
+
+        toast.success(data.message);
       }
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong.!");
     }
   };
+
+  useEffect(() => {
+    const { email, name, phone, address } = auth?.user;
+    setEmail(email);
+    setName(name);
+    setPhone(phone);
+    setAddress(address);
+  }, [auth?.user]);
   return (
     <Layout title={"Profile - ShopNill Store"}>
       <div className="grid grid-cols-2">
@@ -58,6 +74,7 @@ const Profile = () => {
                       <input
                         type="email"
                         value={email}
+                        disabled
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
                         className="input border-none"
