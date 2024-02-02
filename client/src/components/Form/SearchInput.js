@@ -2,6 +2,7 @@ import React from "react";
 import { useSearch } from "../../context/search";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ImSearch } from "react-icons/im";
 
 const SearchInput = () => {
   const [values, setValues] = useSearch();
@@ -22,16 +23,19 @@ const SearchInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex justify-center items-center">
       <input
         type="text"
         placeholder="Search Here..."
-        className="input sm:border md:-border w-24 md:w-auto border-none "
+        className="input input-bordered rounded-none rounded-l-lg w-24 md:w-auto "
         value={values.keyword}
         onChange={(e) => setValues({ ...values, keyword: e.target.value })}
       />
-      <button className="btn btn-danger" type="submit">
-        Search
+      <button
+        type="submit"
+        className="btn btn-primary rounded-none rounded-r-lg"
+      >
+        <ImSearch className="" size={25} />
       </button>
     </form>
   );

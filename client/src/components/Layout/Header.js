@@ -114,7 +114,8 @@ const Header = () => {
             to={"/"}
             className="btn btn-ghost text-xl tracking-widest border-none hover:none  "
           >
-            <BsFillHandbagFill className="text-blue-800" /> ShopNill
+            <BsFillHandbagFill className="text-blue-800 hover:bg-orange-600" />{" "}
+            ShopNill Store
           </NavLink>
         </div>
 
