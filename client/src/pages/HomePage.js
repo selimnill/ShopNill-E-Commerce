@@ -200,7 +200,7 @@ const HomePage = () => {
           <h1 className="ml-5 font-bold mb-3 mt-7">Products</h1>
           <div className="flex flex-wrap">
             {products.map((p) => (
-              <div className="border border-3 rounded ml-2 border-gray-600 h-64 w-52 mt-6">
+              <div className="border border-3 rounded ml-2 border-gray-600 h-64 w-52 mt-6 cursor-pointer hover:border-indigo-600">
                 <figure className="px-10 pt-10">
                   <img
                     className="rounded-xl h-28 w-28 mt-[-20px]"

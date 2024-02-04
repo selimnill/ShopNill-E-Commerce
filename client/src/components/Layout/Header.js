@@ -117,7 +117,9 @@ const Header = () => {
                 <>
                   <li>
                     <details>
-                      <summary>{auth?.user?.name}</summary>
+                      <summary>
+                        <FaUser />
+                      </summary>
                       <ul className="p-2 bg-base-100 rounded-t-none">
                         <li>
                           <NavLink
@@ -210,7 +212,9 @@ const Header = () => {
             <li>
               <details>
                 <summary>
-                  <BiSolidCategoryAlt size={20} />
+                  <Link to={"/categories"}>
+                    <BiSolidCategoryAlt size={20} />
+                  </Link>
                 </summary>
                 <ul className="p-2 bg-base-100 rounded-t-none w-64">
                   {categories?.map((cat) => (
@@ -243,7 +247,6 @@ const Header = () => {
               <>
                 <li>
                   <details>
-                    <FaUser className="30" />
                     <summary>{auth?.user?.name}</summary>
                     <ul className="p-2 bg-base-100 rounded-t-none">
                       <li>
