@@ -4,12 +4,15 @@ import { useAuth } from "../context/auth";
 import axios from "axios";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
 import SearchInput from "../components/Form/SearchInput";
 import Banner from "../components/Banner/Banner";
 import Categories from "../components/Categories/Categories";
+import useCategory from "../hooks/useCategory";
+import { FaCartPlus, FaEye, FaStar } from "react-icons/fa";
+import { BsStarHalf } from "react-icons/bs";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -22,6 +25,8 @@ const HomePage = () => {
   const [cart, setCart] = useCart();
 
   const navigate = useNavigate();
+
+  const category = useCategory();
 
   // get all categories
   const allCategory = async () => {
@@ -130,7 +135,7 @@ const HomePage = () => {
     <Layout title={"Home - ShopNill Store"} className="dark:bg-black">
       <div className="grid grid-cols-4 ">
         <div className="">
-          <div className="flex-col sticky top-32">
+          <div className="flex-col sticky top-24">
             <h2 className="text-center font-bold mb-4 mt-4">
               Filter By Category
             </h2>
@@ -148,7 +153,7 @@ const HomePage = () => {
               ))}
             </div>
             {/* filter by prices */}
-            <h2 className="text-lg font-bold mt-2 mb-2 text-center mt-3">
+            <h2 className="text-lg font-bold mb-2 text-center mt-3">
               Filter By Prices
             </h2>
             <div className="flex flex-col w-full mt-[-30px]">
@@ -166,7 +171,7 @@ const HomePage = () => {
             <div></div>
             <div className="flex flex-column ml-5">
               <button
-                className="btn bg-red-500 hover:bg-red-800 text-white font-semibold mt-5"
+                className="btn bg-red-500 hover:bg-red-800 text-white font-semibold mt-3"
                 onClick={() => window.location.reload()}
               >
                 RESET FILTERS
@@ -181,18 +186,13 @@ const HomePage = () => {
           <div className="Banner">
             <Banner />
           </div>
-          <div className="categories mt-72 grid grid-cols-5 ">
-            {categories?.map((c) => (
+          <div className="categories mt-72 grid grid-cols-5 gap-4 cursor-pointer ">
+            {category?.map((c) => (
               <>
                 <div className="h-24 w-36 text-center p-1 rounded bg-indigo-900 text-white pointer-event hover:bg-indigo-700 mt-4 flex justify-center items-center">
-                  {products?.map((p) => (
-                    <img
-                      className="absolute"
-                      src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
-                      alt="photo"
-                    />
-                  ))}
-                  <h3 className="text-lg relative"> {c?.name}</h3>
+                  <Link to={`/category/${c?.slug}`}>
+                    <h3 className="text-lg"> {c?.name}</h3>
+                  </Link>
                 </div>
               </>
             ))}
@@ -203,27 +203,33 @@ const HomePage = () => {
               <div className="border border-3 rounded ml-2 border-gray-600 h-64 w-52 mt-6">
                 <figure className="px-10 pt-10">
                   <img
-                    className="rounded-xl h-28 w-28 text-center mt-[-20px]"
+                    className="rounded-xl h-28 w-28 mt-[-20px]"
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
                     alt={p.name}
                   />
                 </figure>
-                <div className="card-body items-center text-center">
+                <div className="card-body  ">
                   <h2 className="card-title text-sm mt-[-25px]">{p.name}</h2>
                   <p className="text-xs">
                     {p?.description.length >= 20
                       ? p?.description.slice(0, 23) + "..."
                       : p?.description}
                   </p>
-                  <p className="text-xs">
+                  <p className="text-xs flex justify-between">
                     <b>$ {p?.price}</b>
+                    <div className="flex">
+                      <FaStar className="text-yellow-400" />
+                      <FaStar className="text-yellow-400" />
+                      <FaStar className="text-yellow-400" />
+                      <BsStarHalf className="text-yellow-400" />
+                    </div>
                   </p>
                   <div className="flex justify-center items-center gap-1 bottom-1">
                     <button
                       className="btn btn-primary btn-xs"
                       onClick={() => navigate(`/product/${p?.slug}`)}
                     >
-                      More Details
+                      <FaEye />
                     </button>
                     <button
                       className="btn btn-primary btn-xs"
@@ -236,7 +242,7 @@ const HomePage = () => {
                         toast.success("Product Added To Cart");
                       }}
                     >
-                      Add To Cart
+                      <FaCartPlus />
                     </button>
                   </div>
                 </div>
