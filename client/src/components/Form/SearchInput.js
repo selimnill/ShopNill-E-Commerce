@@ -23,11 +23,14 @@ const SearchInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-center items-center">
+    <form
+      onSubmit={handleSubmit}
+      className="flex justify-center items-center lg:w-full"
+    >
       <input
         type="text"
-        placeholder="Search Here..."
-        className="input input-bordered rounded-none rounded-l-lg w-24 md:w-auto "
+        placeholder="Search Products..."
+        className="input input-bordered rounded-none rounded-l-lg w-24 md:w-auto lg:w-96"
         value={values.keyword}
         onChange={(e) => setValues({ ...values, keyword: e.target.value })}
       />

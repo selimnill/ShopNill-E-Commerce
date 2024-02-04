@@ -7,9 +7,11 @@ import { Prices } from "../components/Prices";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
+import SearchInput from "../components/Form/SearchInput";
+import Banner from "../components/Banner/Banner";
+import Categories from "../components/Categories/Categories";
 
 const HomePage = () => {
-  const [auth, setAuth] = useAuth();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -125,46 +127,77 @@ const HomePage = () => {
   }, []);
 
   return (
-    <Layout title={"Home - ShopNill Store"}>
-      <div className="grid grid-cols-4">
-        <div className="flex-col">
-          <h2 className="text-center font-bold mb-4 mt-4">
-            Filter By Category
-          </h2>
-          <div className="flex flex-column ml-5">
-            {categories?.map((c) => (
-              <Checkbox
-                key={c?._id}
-                onChange={(e) => handleFilter(e.target.checked, c?._id)}
-              >
-                {c?.name}
-              </Checkbox>
-            ))}
-          </div>
-          {/* filter by prices */}
-          <h2 className="text-lg font-bold mt-2 mb-2 text-center">Prices</h2>
-          <div className="flex flex-column ml-5">
-            <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-              {Prices?.map((p) => (
-                <div key={p?._id}>
-                  <Radio value={p.array}>{p?.name}</Radio>
-                </div>
+    <Layout title={"Home - ShopNill Store"} className="dark:bg-black">
+      <div className="grid grid-cols-4 ">
+        <div className="">
+          <div className="flex-col sticky top-32">
+            <h2 className="text-center font-bold mb-4 mt-4">
+              Filter By Category
+            </h2>
+            <div className="flex flex-col w-full mt-[-30px]">
+              <div className="divider divider-primary"></div>
+            </div>
+            <div className="flex flex-column ml-5">
+              {categories?.map((c) => (
+                <Checkbox
+                  key={c?._id}
+                  onChange={(e) => handleFilter(e.target.checked, c?._id)}
+                >
+                  {c?.name}
+                </Checkbox>
               ))}
-            </Radio.Group>
-          </div>
-          <div></div>
-          <div className="flex flex-column ml-5">
-            <button
-              className="btn bg-red-500 hover:bg-red-800 text-white font-semibold mt-5"
-              onClick={() => window.location.reload()}
-            >
-              RESET FILTERS
-            </button>
+            </div>
+            {/* filter by prices */}
+            <h2 className="text-lg font-bold mt-2 mb-2 text-center mt-3">
+              Filter By Prices
+            </h2>
+            <div className="flex flex-col w-full mt-[-30px]">
+              <div className="divider divider-primary"></div>
+            </div>
+            <div className="flex flex-column ml-5">
+              <Radio.Group onChange={(e) => setRadio(e.target.value)}>
+                {Prices?.map((p) => (
+                  <div key={p?._id}>
+                    <Radio value={p.array}>{p?.name}</Radio>
+                  </div>
+                ))}
+              </Radio.Group>
+            </div>
+            <div></div>
+            <div className="flex flex-column ml-5">
+              <button
+                className="btn bg-red-500 hover:bg-red-800 text-white font-semibold mt-5"
+                onClick={() => window.location.reload()}
+              >
+                RESET FILTERS
+              </button>
+            </div>
           </div>
         </div>
         <div className="col-span-3">
-          <h1 className="text-center mt-4 mb-4 font-bold">All Products</h1>
-          <h1 className="ml-5 font-bold mb-3">Products</h1>
+          <div className="mt-10 w-full mb-10">
+            <SearchInput />
+          </div>
+          <div className="Banner">
+            <Banner />
+          </div>
+          <div className="categories mt-72 grid grid-cols-5 ">
+            {categories?.map((c) => (
+              <>
+                <div className="h-24 w-36 text-center p-1 rounded bg-indigo-900 text-white pointer-event hover:bg-indigo-700 mt-4 flex justify-center items-center">
+                  {products?.map((p) => (
+                    <img
+                      className="absolute"
+                      src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
+                      alt="photo"
+                    />
+                  ))}
+                  <h3 className="text-lg relative"> {c?.name}</h3>
+                </div>
+              </>
+            ))}
+          </div>
+          <h1 className="ml-5 font-bold mb-3 mt-7">Products</h1>
           <div className="flex flex-wrap">
             {products.map((p) => (
               <div className="border border-3 rounded ml-2 border-gray-600 h-64 w-52 mt-6">

@@ -26,9 +26,9 @@
   font-size: 17px;
   line-height: 26px;
   text-transform: uppercase;
-  box-shadow: 0 8px 6px -6px gray;
-  -webkit-box-shadow: 0 8px 6px -6px gray;
-  border-bottom: 0.5px solid gray;
+  box-shadow: 0 8px 6px -6px rgb(72, 0, 254);
+  -webkit-box-shadow: 0 8px 6px -6px rgb(72, 0, 254);
+  border-bottom: 0.5px solid rgb(72, 0, 254);
 }
 /* =============================
 ==========footer============= */

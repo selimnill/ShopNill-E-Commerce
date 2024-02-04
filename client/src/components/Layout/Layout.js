@@ -5,6 +5,23 @@ import { Helmet } from "react-helmet";
 import { Toaster } from "react-hot-toast";
 
 const Layout = ({ children, title, description, keywords, author }) => {
+  // const [theme, setTheme] = useState(
+  //   localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
+  // );
+
+  // useEffect(() => {
+  //   localStorage.setItem("theme", theme);
+  //   const localTheme = localStorage.getItem("theme");
+  //   document.querySelector("html").setAttribute("data-theme", localTheme);
+  // }, [theme]);
+
+  // const handleToggle = (e) => {
+  //   if (e.target.checked) {
+  //     setTheme("dark");
+  //   } else {
+  //     setTheme("light");
+  //   }
+  // };
   return (
     <div>
       <Helmet>
@@ -15,7 +32,7 @@ const Layout = ({ children, title, description, keywords, author }) => {
         <title>{title}</title>
       </Helmet>
       <Header />
-      <main style={{ minHeight: "70vh" }}>
+      <main className="dark" style={{ minHeight: "70vh" }}>
         <Toaster />
         {children}
       </main>
