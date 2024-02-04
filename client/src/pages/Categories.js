@@ -17,19 +17,6 @@ const Categories = () => {
               <Link to={`/category/${cat?.slug}`}>{cat?.name}</Link>
             </div>
           </div>
-          // <ul
-          //   key={cat?._id}
-          //   className="flex justify-center items-center bg-orange-300 h-full "
-          // >
-          //   <li className="hover:bg-orange-500 p-3  rounded-lg">
-          //     <Link
-          //       to={`/category/${cat?.slug}`}
-          //       className=" p-5 text-lg font-bold"
-          //     >
-          //       {cat?.name}
-          //     </Link>
-          //   </li>
-          // </ul>
         ))}
       </div>
     </Layout>
