@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./../components/Layout/Layout";
-import { useAuth } from "../context/auth";
 import axios from "axios";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
@@ -9,7 +8,7 @@ import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
 import SearchInput from "../components/Form/SearchInput";
 import Banner from "../components/Banner/Banner";
-import Categories from "../components/Categories/Categories";
+import { IoMdStar, IoMdStarHalf } from "react-icons/io";
 import useCategory from "../hooks/useCategory";
 import { FaCartPlus, FaEye, FaStar } from "react-icons/fa";
 import { BsStarHalf } from "react-icons/bs";
@@ -145,6 +144,7 @@ const HomePage = () => {
             <div className="flex flex-column ml-5">
               {categories?.map((c) => (
                 <Checkbox
+                  className="p-1 hover:bg-indigo-700 hover:pl-4 hover:transition-all hover:p-2 hover:ml-4 hover:translate-x-2 hover:text-white hover:rounded"
                   key={c?._id}
                   onChange={(e) => handleFilter(e.target.checked, c?._id)}
                 >
@@ -163,7 +163,12 @@ const HomePage = () => {
               <Radio.Group onChange={(e) => setRadio(e.target.value)}>
                 {Prices?.map((p) => (
                   <div key={p?._id}>
-                    <Radio value={p.array}>{p?.name}</Radio>
+                    <Radio
+                      className="p-1 hover:bg-indigo-700 hover:pl-4 hover:transition-all hover:p-2 hover:ml-4 hover:translate-x-2 hover:text-white hover:rounded"
+                      value={p.array}
+                    >
+                      {p?.name}
+                    </Radio>
                   </div>
                 ))}
               </Radio.Group>
@@ -186,7 +191,7 @@ const HomePage = () => {
           <div className="Banner">
             <Banner />
           </div>
-          <div className="categories mt-72 grid grid-cols-5 gap-4 cursor-pointer ">
+          <div className="categories mt-72 grid grid-cols-5 gap-2 cursor-pointer ">
             {category?.map((c) => (
               <>
                 <div className="h-24 w-36 text-center p-1 rounded bg-indigo-900 text-white pointer-event hover:bg-indigo-700 mt-4 flex justify-center items-center">
@@ -198,30 +203,33 @@ const HomePage = () => {
             ))}
           </div>
           <h1 className="ml-5 font-bold mb-3 mt-7">Products</h1>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap gap-2 justify-center ">
             {products.map((p) => (
-              <div className="border border-3 rounded ml-2 border-gray-600 h-64 w-52 mt-6 cursor-pointer hover:border-indigo-600">
-                <figure className="px-10 pt-10">
+              <div
+                onClick={() => navigate(`/product/${p?.slug}`)}
+                className=" h-[340px] w-64 mt-6  cursor-pointer hover:border-indigo-600"
+              >
+                <figure className="px-10 pt-10 ">
                   <img
-                    className="rounded-xl h-28 w-28 mt-[-20px]"
+                    className=" h-56 w-60 mt-[-40px]"
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
                     alt={p.name}
                   />
                 </figure>
-                <div className="card-body  ">
-                  <h2 className="card-title text-sm mt-[-25px]">{p.name}</h2>
-                  <p className="text-xs">
+                <div className="card-body ml-2 w-58">
+                  <h2 className="card-title text-xs mt-[-25px]">{p.name}</h2>
+                  <p className="text-xs mt-[-5px]">
                     {p?.description.length >= 20
                       ? p?.description.slice(0, 23) + "..."
                       : p?.description}
                   </p>
                   <p className="text-xs flex justify-between">
                     <b>$ {p?.price}</b>
-                    <div className="flex">
-                      <FaStar className="text-yellow-400" />
-                      <FaStar className="text-yellow-400" />
-                      <FaStar className="text-yellow-400" />
-                      <BsStarHalf className="text-yellow-400" />
+                    <div className="flex text-base">
+                      <IoMdStar className="text-yellow-400" />
+                      <IoMdStar className="text-yellow-400" />
+                      <IoMdStar className="text-yellow-400" />
+                      <IoMdStarHalf className="text-yellow-400" />
                     </div>
                   </p>
                   <div className="flex justify-center items-center gap-1 bottom-1">

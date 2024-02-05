@@ -5,11 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaCartPlus, FaEye, FaHome, FaStar } from "react-icons/fa";
 import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from "react-icons/io";
 import { BsStarHalf } from "react-icons/bs";
+import { useCart } from "../context/cart";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const params = useParams();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [cart, setCart] = useCart();
 
   const navigate = useNavigate();
 
@@ -39,6 +42,26 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+
+  const total = product?.price;
+  console.log("total", total);
+
+  const [count, setCount] = useState(1);
+  const [price, setPrice] = useState();
+
+  const handleIncrement = () => {
+    if (count < 10) {
+      setCount((prevCount) => prevCount + 1);
+      setPrice(price + product.price);
+    }
+  };
+  const handleDercrement = () => {
+    if (count > 1) {
+      setCount((prevCount) => prevCount - 1);
+    }
+  };
+
+  console.log(price);
 
   return (
     <Layout title={"Product Details - ShopNill Store"}>
@@ -88,7 +111,7 @@ const ProductDetails = () => {
           <h4 className="text-2xl">
             <span className="font-semibold text-indigo-600">
               {" "}
-              $ {product?.price}
+              $ {product?.price * parseInt(count)}
             </span>{" "}
           </h4>
           <h4 className="text-sm flex items-center gap-4">
@@ -102,18 +125,26 @@ const ProductDetails = () => {
             <span className="opacity-65">10 Reviews</span>
           </h4>
           <div className="cart flex mt-5">
-            <div className="flex bg-gray-300 w-[115px] h-12 rounded-xl mt-2 rounded-r-none">
-              <button className="btn rounded-none border-none bg-transparent">
+            <div className="flex justify-center items-center w-36 bg-gray-300 text-xl cursor-pointer gap-4 p-3 font-bold rounded-r-none h-12 mt-2">
+              <span className="minus" onClick={handleDercrement}>
                 -
-              </button>
-              <button className="btn rounded-none border-none bg-transparent">
-                1
-              </button>
-              <button className="btn rounded-none border-none bg-transparent">
+              </span>
+              <span className="num">{count}</span>
+              <span className="plus" onClick={handleIncrement}>
                 +
-              </button>
+              </span>
             </div>
-            <button className="btn btn-primary rounded-l-none mt-2 w-full block">
+            <button
+              className="btn btn-primary rounded-l-none mt-2 w-full block"
+              onClick={() => {
+                setCart([...cart, product]);
+                localStorage.setItem(
+                  "cart",
+                  JSON.stringify([...cart, product])
+                );
+                toast.success("Product Added To Cart");
+              }}
+            >
               ADD TO CART
             </button>
           </div>
@@ -140,7 +171,9 @@ const ProductDetails = () => {
         </div>
       </div>
       <div className="row">
-        <h1 className="text-xl">Similar Products</h1>
+        <h1 className="text-xl font-bold text-decoration-underline ml-3 mt-4 mb-3">
+          Similar Products
+        </h1>
         {relatedProducts.length < 1 && (
           <p className="font-semibold text-center mt-3">
             No Similar Product Found.!
@@ -149,17 +182,18 @@ const ProductDetails = () => {
         <div className="flex flex-wrap cursor-pointer  mb-3">
           {relatedProducts?.map((p) => (
             <div
+              onClick={() => navigate(`/product/${p?.slug}`)}
               key={p?._id}
-              className="border border-3 rounded ml-2 border-indigo-600 h-64 w-52 mt-6 hover:border-indigo-600"
+              className="  h-[340px] w-64 mt-6  cursor-pointer hover:border-indigo-600"
             >
               <figure className="px-10 pt-10">
                 <img
-                  className="rounded-xl h-28 w-28 text-center mt-[-20px]"
+                  className="h-56 w-60 mt-[-40px]"
                   src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
                   alt={p?.name}
                 />
               </figure>
-              <div className="card-body">
+              <div className="card-body ml-2 w-58">
                 <h2 className="card-title text-sm mt-[-25px]">{p?.name}</h2>
                 <p className="text-xs">
                   {p?.description.length >= 20
