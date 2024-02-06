@@ -43,26 +43,34 @@ const ProductDetails = () => {
     }
   };
 
-  const total = product?.price;
-  console.log("total", total);
-
   const [count, setCount] = useState(1);
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
 
   const handleIncrement = () => {
     if (count < 10) {
       setCount((prevCount) => prevCount + 1);
-      setPrice(price + product.price);
+      setPrice(product?.price * (count + 1));
     }
+    // const totalPrice = () => {
+    //   try {
+    //     let total = product?.price;
+    //     console.log("before total", total);
+    //     total = total + product?.price;
+    //     console.log("after total", total);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // totalPrice();
   };
   const handleDercrement = () => {
     if (count > 1) {
       setCount((prevCount) => prevCount - 1);
+      setPrice(price - product.price);
     }
   };
 
   console.log(price);
-
   return (
     <Layout title={"Product Details - ShopNill Store"}>
       <div className="text-sm breadcrumbs bg-indigo-200 w-full h-9">
@@ -111,7 +119,7 @@ const ProductDetails = () => {
           <h4 className="text-2xl">
             <span className="font-semibold text-indigo-600">
               {" "}
-              $ {product?.price * parseInt(count)}
+              $ {product?.price * count}
             </span>{" "}
           </h4>
           <h4 className="text-sm flex items-center gap-4">
@@ -137,11 +145,12 @@ const ProductDetails = () => {
             <button
               className="btn btn-primary rounded-l-none mt-2 w-full block"
               onClick={() => {
-                setCart([...cart, product]);
+                setCart([...cart, product, price]);
                 localStorage.setItem(
                   "cart",
                   JSON.stringify([...cart, product])
                 );
+                console.log(cart);
                 toast.success("Product Added To Cart");
               }}
             >

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { FaHome } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const CartPage = () => {
   const [cart, setCart] = useCart();
@@ -81,50 +83,97 @@ const CartPage = () => {
     }
   };
 
+  const handleIncrement = () => {
+    if (count < 10) {
+      setCount((prevCount) => prevCount + 1);
+      setPrice(product?.price * (count + 1));
+    }
+    // const totalPrice = () => {
+    //   try {
+    //     let total = product?.price;
+    //     console.log("before total", total);
+    //     total = total + product?.price;
+    //     console.log("after total", total);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // totalPrice();
+  };
+  const handleDercrement = () => {
+    if (count > 1) {
+      setCount((prevCount) => prevCount - 1);
+      setPrice(price - product.price);
+    }
+  };
+
   return (
     <Layout title={"Cart - ShopNill Store"}>
       <div>
-        <div>
-          <h1 className="text-center">{`Hello ${
+        <div className="text-sm breadcrumbs bg-indigo-200 w-full h-9">
+          <ul>
+            <li>
+              <a>
+                <FaHome />
+                Home
+              </a>
+            </li>
+            <li>
+              <a>Products Cart</a>
+            </li>
+          </ul>
+        </div>
+        <div className="">
+          <h1 className="text-center text-xl font-bold">{`Hello Mr. ${
             auth?.token && auth?.user?.name
           }`}</h1>
-          <h4 className="text-center mt-3">
+          <h4 className="text-center mt-3 font-semibold">
             {cart?.length
-              ? `You have ${cart?.length} itemes in your cart ${
+              ? `You have ${cart?.length} items in your cart ${
                   auth?.token ? "" : "Please login to checkout"
                 }`
               : "Your Cart is Empty "}
           </h4>
         </div>
-        <div className="grid grid-cols-2 mt-5 m-3 p-3">
-          <div>
+        <div className="grid grid-cols-3 mt-5 m-3 p-3">
+          <div className="col-span-2 p-3">
             {cart?.map((p) => (
               <div
-                className="flex justify-around items-center border m-3 p-4"
+                className="flex justify-around items-center border-2 border-indigo-500 rounded p-3"
                 key={p?._id}
               >
                 <div>
                   <img
-                    className="rounded-xl h-28 w-28 text-center mt-[-20px]"
+                    className="rounded-xl h-28 w-28 text-center]"
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
                     alt={p.name}
                   />
                 </div>
+                <div className="flex justify-center items-center w-36 bg-gray-300 text-xl cursor-pointer gap-4 p-3 font-bold rounded-r-none h-12 mt-2">
+                  <span className="minus" onClick={handleDercrement}>
+                    -
+                  </span>
+                  <span className="num">{count}</span>
+                  <span className="plus" onClick={handleIncrement}>
+                    +
+                  </span>
+                </div>
                 <div className="flex-none">
-                  <h4 className="text-lg">{p?.name}</h4>
-                  <p>{p?.description.substring(9, 30)}</p>
-                  <h4>Price : $ {p?.price}</h4>
+                  <h4 className="text-md font-semibold">{p?.name}</h4>
+                  <h4 className="font-bold text-indigo-500">$ {p?.price}</h4>
+                </div>
+                <div className="delte-button">
                   <button
-                    className="btn bg-red-600 text-white font-semibold"
+                    className=" text-red-600 font-semibold"
                     onClick={() => handleRemove(p?._id)}
                   >
-                    Remove
+                    <MdDelete size={25} />
                   </button>
                 </div>
               </div>
             ))}
           </div>
-          <div className="text-center">
+          <div className="text-center border-l-4 border-indigo-600 p-3">
             <h4>Cart Summary</h4>
             <p>Total | CheckOut | Payment</p>
             <hr />
