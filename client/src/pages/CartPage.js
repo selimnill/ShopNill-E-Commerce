@@ -83,27 +83,25 @@ const CartPage = () => {
     }
   };
 
+  const [count, setCount] = useState(1);
+  const [price, setPrice] = useState(0);
+
   const handleIncrement = () => {
     if (count < 10) {
       setCount((prevCount) => prevCount + 1);
-      setPrice(product?.price * (count + 1));
+      setPrice(
+        cart?.map((c) => {
+          let total = 0;
+          total = count + c.price;
+        })
+      );
     }
-    // const totalPrice = () => {
-    //   try {
-    //     let total = product?.price;
-    //     console.log("before total", total);
-    //     total = total + product?.price;
-    //     console.log("after total", total);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // totalPrice();
   };
+  console.log(price);
   const handleDercrement = () => {
     if (count > 1) {
       setCount((prevCount) => prevCount - 1);
-      setPrice(price - product.price);
+      // setPrice(price - product.price);
     }
   };
 
@@ -149,12 +147,12 @@ const CartPage = () => {
                     alt={p.name}
                   />
                 </div>
-                <div className="flex justify-center items-center w-36 bg-gray-300 text-xl cursor-pointer gap-4 p-3 font-bold rounded-r-none h-12 mt-2">
-                  <span className="minus" onClick={handleDercrement}>
+                <div className="flex justify-center items-center w-36 bg-gray-300 opacity-80 rounded text-xl cursor-pointer gap-4 p-3 font-bold rounded-r-none h-12 mt-2">
+                  <span className="minus text-4xl" onClick={handleDercrement}>
                     -
                   </span>
-                  <span className="num">{count}</span>
-                  <span className="plus" onClick={handleIncrement}>
+                  <span className="num text-2xl">{count}</span>
+                  <span className="plus text-3xl" onClick={handleIncrement}>
                     +
                   </span>
                 </div>
