@@ -55,14 +55,12 @@ const CartPage = () => {
     }
   };
 
-  //   delete cart product
+  // delete cart product
   const handleRemove = (pid) => {
     try {
-      let myCart = [...cart];
-      let index = myCart.findIndex((item) => item._id === pid);
-      myCart.splice(index, 1);
-      setCart(myCart);
-      localStorage.setItem("cart", JSON.stringify(myCart));
+      const updatedCart = cart.filter((item) => item._id !== pid);
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
     } catch (error) {
       console.log(error);
     }
@@ -71,8 +69,8 @@ const CartPage = () => {
   const totalPrice = () => {
     try {
       let total = 0;
-      cart?.map((item) => {
-        total = total + item?.price;
+      cart?.forEach((item) => {
+        total += item?.price * item?.quantity;
       });
       return total.toLocaleString("en-US", {
         style: "currency",
@@ -83,26 +81,31 @@ const CartPage = () => {
     }
   };
 
-  const [count, setCount] = useState(1);
-  const [price, setPrice] = useState(0);
-
-  const handleIncrement = () => {
-    if (count < 10) {
-      setCount((prevCount) => prevCount + 1);
-      setPrice(
-        cart?.map((c) => {
-          let total = 0;
-          total = count + c.price;
-        })
-      );
-    }
+  const handleIncrement = (productId) => {
+    const updatedCart = cart.map((item) => {
+      if (item._id === productId) {
+        const updatedQuantity =
+          item.quantity < 10 ? item.quantity + 1 : item.quantity;
+        const updatedItem = { ...item, quantity: updatedQuantity };
+        return updatedItem;
+      }
+      return item;
+    });
+    setCart(updatedCart);
+    setCount(1);
   };
-  console.log(price);
-  const handleDercrement = () => {
-    if (count > 1) {
-      setCount((prevCount) => prevCount - 1);
-      // setPrice(price - product.price);
-    }
+
+  const handleDecrement = (productId) => {
+    const updatedCart = cart.map((item) => {
+      if (item._id === productId) {
+        const updatedQuantity =
+          item.quantity > 1 ? item.quantity - 1 : item.quantity;
+        const updatedItem = { ...item, quantity: updatedQuantity };
+        return updatedItem;
+      }
+      return item;
+    });
+    setCart(updatedCart);
   };
 
   return (
@@ -148,17 +151,25 @@ const CartPage = () => {
                   />
                 </div>
                 <div className="flex justify-center items-center w-36 bg-gray-300 opacity-80 rounded text-xl cursor-pointer gap-4 p-3 font-bold rounded-r-none h-12 mt-2">
-                  <span className="minus text-4xl" onClick={handleDercrement}>
+                  <span
+                    className="minus text-4xl"
+                    onClick={() => handleDecrement(p._id)}
+                  >
                     -
                   </span>
-                  <span className="num text-2xl">{count}</span>
-                  <span className="plus text-3xl" onClick={handleIncrement}>
+                  <span className="num text-2xl">{p.quantity}</span>
+                  <span
+                    className="plus text-3xl"
+                    onClick={() => handleIncrement(p._id)}
+                  >
                     +
                   </span>
                 </div>
                 <div className="flex-none">
                   <h4 className="text-md font-semibold">{p?.name}</h4>
-                  <h4 className="font-bold text-indigo-500">$ {p?.price}</h4>
+                  <h4 className="font-bold text-indigo-500">
+                    $ {p?.price * p?.quantity}
+                  </h4>
                 </div>
                 <div className="delte-button">
                   <button

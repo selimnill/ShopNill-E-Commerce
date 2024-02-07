@@ -51,17 +51,6 @@ const ProductDetails = () => {
       setCount((prevCount) => prevCount + 1);
       setPrice(product?.price * (count + 1));
     }
-    // const totalPrice = () => {
-    //   try {
-    //     let total = product?.price;
-    //     console.log("before total", total);
-    //     total = total + product?.price;
-    //     console.log("after total", total);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // totalPrice();
   };
   const handleDercrement = () => {
     if (count > 1) {
@@ -91,7 +80,7 @@ const ProductDetails = () => {
           </li>
         </ul>
       </div>
-      <div className="grid grid-cols-6 mt-5 ">
+      <div className="grid grid-cols-6 mt-5 sm:flex-col-reverse xs:flex-col-reverse ">
         <div className="col-span-2 flex justify-center items-center">
           <img
             className="rounded-xl text-center mt-[-20px]"
@@ -119,7 +108,7 @@ const ProductDetails = () => {
           <h4 className="text-2xl">
             <span className="font-semibold text-indigo-600">
               {" "}
-              $ {product?.price * count}
+              $ {product?.price}
             </span>{" "}
           </h4>
           <h4 className="text-sm flex items-center gap-4">
@@ -133,15 +122,6 @@ const ProductDetails = () => {
             <span className="opacity-65">10 Reviews</span>
           </h4>
           <div className="cart flex mt-5">
-            <div className="flex justify-center items-center w-36 bg-gray-300 text-xl cursor-pointer gap-4 p-3 font-bold rounded-r-none h-12 mt-2">
-              <span className="minus" onClick={handleDercrement}>
-                -
-              </span>
-              <span className="num">{count}</span>
-              <span className="plus" onClick={handleIncrement}>
-                +
-              </span>
-            </div>
             <button
               className="btn btn-primary rounded-l-none mt-2 w-full block"
               onClick={() => {
