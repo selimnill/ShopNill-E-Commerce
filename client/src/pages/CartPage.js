@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { FaHome } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import emptyCart from "../../src/assets/cartoon/empty cart.png";
 
 const CartPage = () => {
   const [cart, setCart] = useCart();
@@ -99,6 +100,7 @@ const CartPage = () => {
         const updatedQuantity = item.quantity > 1 ? item.quantity - 1 : 1;
         return { ...item, quantity: updatedQuantity };
       }
+      console.log(updatedCart);
       return item;
     });
     setCart(updatedCart);
@@ -137,20 +139,28 @@ const CartPage = () => {
             </li>
           </ul>
         </div>
-        <div className="">
-          <h1 className="text-center text-xl font-bold">{`Hello Mr. ${
-            auth?.token && auth?.user?.name
-          }`}</h1>
-          <h4 className="text-center mt-3 font-semibold">
-            {cart?.length
-              ? `You have ${cart?.length} items in your cart ${
-                  auth?.token ? "" : "Please login to checkout"
-                }`
-              : "Your Cart is Empty "}
-          </h4>
-        </div>
+
         <div className="grid grid-cols-3 mt-5 m-3 p-3">
           <div className="col-span-2 p-3">
+            <div className="mt-2">
+              <h4 className="text-center mt-3 font-semibold">
+                {cart?.length ? (
+                  `You have ${cart?.length} items in your cart ${
+                    auth?.token ? "" : "Please login to checkout"
+                  }`
+                ) : (
+                  <>
+                    <h1 className="text-center text-xl font-bold">{`Hello Mr. ${
+                      auth?.token && auth?.user?.name
+                    }`}</h1>
+                    <span>Your Cart is Empty</span>
+                    <div>
+                      <img src={emptyCart} alt="empty cart" />
+                    </div>
+                  </>
+                )}
+              </h4>
+            </div>
             {cart?.map((p) => (
               <div
                 className="flex justify-around items-center border-2 border-indigo-500 rounded p-3"
@@ -196,17 +206,22 @@ const CartPage = () => {
             ))}
           </div>
           <div className="text-center border-l-4 border-indigo-600 p-3">
-            <h4>Cart Summary</h4>
-            <p>Total | CheckOut | Payment</p>
-            <hr />
-            <h3 className="text-lg mt-4">Total : {totalPrice()} </h3>
+            <h4 className="font-bold text-lg">Cart Summary</h4>
+            <p className="font-semibold">Total | CheckOut | Payment</p>
+            <hr className=" mt-1" />
+            <h3 className="text-lg mt-4 font-semibold">
+              Total :{" "}
+              <span className="font-bold text-indigo-700">{totalPrice()}</span>{" "}
+            </h3>
             {auth?.user?.address ? (
               <>
                 <div className="mb-3">
                   <h4>Current Address</h4>
-                  <h5>{auth?.user?.address}</h5>
+                  <h5 className="font-semibold uppercase">
+                    {auth?.user?.address}
+                  </h5>
                   <button
-                    className="btn btn-secondary"
+                    className="btn btn-primary"
                     onClick={() => navigate("/dashboard/user/profile")}
                   >
                     Update Address

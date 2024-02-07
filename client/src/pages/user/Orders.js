@@ -81,9 +81,9 @@ const Orders = () => {
                           />
                         </div>
                         <div className="flex-none">
-                          <h4 className="text-lg">{p?.name}</h4>
-                          <p>{p?.description.substring(9, 30)}</p>
-                          <h4>Price : $ {p?.price}</h4>
+                          <h4 className="text-md">{p?.name}</h4>
+                          {/* <p>{p?.description.substring(9, 30)}</p> */}
+                          <h4 className="font-bold"> $ {p?.price}</h4>
                         </div>
                       </div>
                     ))}

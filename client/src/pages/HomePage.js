@@ -204,19 +204,22 @@ const HomePage = () => {
           <h1 className="ml-5 font-bold mb-3 mt-7">Products</h1>
           <div className="flex flex-wrap gap-2 justify-center ">
             {products.map((p) => (
-              <div
-                onClick={() => navigate(`/product/${p?.slug}`)}
-                className=" h-[340px] w-64 mt-6  cursor-pointer hover:border-indigo-600"
-              >
+              <div className=" h-[340px] w-64 mt-6  cursor-pointer hover:border-indigo-600">
                 <figure className="px-10 pt-10 ">
                   <img
                     className=" h-56 w-60 mt-[-40px]"
+                    onClick={() => navigate(`/product/${p?.slug}`)}
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
                     alt={p.name}
                   />
                 </figure>
                 <div className="card-body ml-2 w-58">
-                  <h2 className="card-title text-xs mt-[-25px]">{p.name}</h2>
+                  <h2
+                    className="card-title text-xs mt-[-25px]"
+                    onClick={() => navigate(`/product/${p?.slug}`)}
+                  >
+                    {p.name}
+                  </h2>
                   <p className="text-xs mt-[-5px]">
                     {p?.description.length >= 20
                       ? p?.description.slice(0, 23) + "..."

@@ -1,15 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Layout from "./../components/Layout/Layout";
+import page404 from "../assets/cartoon/pageNotFound.png";
 
 const Pagenotfound = () => {
   return (
     <Layout title={"404 Page Not Found.!"}>
       <div className="pnf">
-        <h1 className="pnf-title">404</h1>
-        <h2 className="pnf-heading">Oops ! Page Not Found</h2>
-        <Link to="/" className="pnf-btn">
-          Go Back
+        <img src={page404} alt="page not found.!" />
+        <Link
+          to="/"
+          className="border-2 border-indigo-600 p-3 hover:bg-indigo-600 hover:text-white text-indigo-600 font-bold rounded mb-3"
+        >
+          Go Back Home
         </Link>
       </div>
     </Layout>
