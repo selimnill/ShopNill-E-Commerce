@@ -7,23 +7,64 @@ import { Link } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   // all products
   const getAllProducts = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/get-product`
       );
+      setLoading(false);
       setProducts(data?.products);
     } catch (error) {
+      setLoading(false);
       console.log(error);
-      toast.error("Something went wrong");
+    }
+  };
+  useEffect(() => {
+    if (page === 1) return;
+    loadMore();
+  }, [page]);
+
+  // load more
+  const loadMore = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
+      );
+      setLoading(false);
+      setProducts([...products, ...data?.products]);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  // get total count product
+  const getTotal = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/product/product-count`
+      );
+      setTotal(data?.total);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTotal();
+  }, []);
+
   return (
     <Layout title={"Products Dashboard - ShopNill Store"}>
       <div className="grid grid-cols-4 ">
@@ -48,13 +89,31 @@ const Products = () => {
                   />
                 </figure>
                 <div className="card-body items-center text-center">
-                  <h2 className="card-title">{p.name}</h2>
-                  <p>{p?.description}</p>
+                  <h2 className=" text-md">{p.name}</h2>
+                  <p className="font-bold">$ {p?.price}</p>
                 </div>
               </Link>
             ))}
           </div>
         </div>
+      </div>
+      <div className="m-2 p-3 text-center">
+        {products &&
+          products.length < total &&
+          (loading ? (
+            <span className="loading loading-ball loading-lg text-center"></span>
+          ) : (
+            <button
+              className="btn btn-success"
+              onClick={(e) => {
+                e.preventDefault();
+                setPage(page + 1);
+              }}
+            >
+              {/* {loading ? "Loading......" : "Loadmore"} */}
+              loadmore
+            </button>
+          ))}
       </div>
     </Layout>
   );

@@ -17,6 +17,11 @@ const CartProvider = ({ children }) => {
     if (existingCartItms) setCart(JSON.parse(existingCartItms));
   }, []);
 
+  useEffect(() => {
+    // Update localStorage whenever cart changes
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
   return (
     <CartContext.Provider value={[cart, setCart]}>
       {children}

@@ -50,7 +50,6 @@ const HomePage = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        // `${process.env.REACT_APP_API}/api/v1/product/product-list/${page}`
         `${process.env.REACT_APP_API}/api/v1/product/get-product`
       );
       setLoading(false);

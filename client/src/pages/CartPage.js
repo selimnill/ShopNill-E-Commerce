@@ -86,27 +86,40 @@ const CartPage = () => {
       if (item._id === productId) {
         const updatedQuantity =
           item.quantity < 10 ? item.quantity + 1 : item.quantity;
-        const updatedItem = { ...item, quantity: updatedQuantity };
-        return updatedItem;
+        return { ...item, quantity: updatedQuantity };
       }
       return item;
     });
     setCart(updatedCart);
-    setCount(1);
   };
 
   const handleDecrement = (productId) => {
     const updatedCart = cart.map((item) => {
       if (item._id === productId) {
-        const updatedQuantity =
-          item.quantity > 1 ? item.quantity - 1 : item.quantity;
-        const updatedItem = { ...item, quantity: updatedQuantity };
-        return updatedItem;
+        const updatedQuantity = item.quantity > 1 ? item.quantity - 1 : 1;
+        return { ...item, quantity: updatedQuantity };
       }
       return item;
     });
     setCart(updatedCart);
   };
+
+  const removeDuplicates = () => {
+    const uniqueCart = cart.reduce((acc, current) => {
+      const x = acc.find((item) => item._id === current._id);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
+    setCart(uniqueCart);
+    localStorage.setItem("cart", JSON.stringify(uniqueCart));
+  };
+
+  useEffect(() => {
+    removeDuplicates(); // Call removeDuplicates function when cart changes
+  }, [cart]);
 
   return (
     <Layout title={"Cart - ShopNill Store"}>
@@ -193,7 +206,7 @@ const CartPage = () => {
                   <h4>Current Address</h4>
                   <h5>{auth?.user?.address}</h5>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-secondary"
                     onClick={() => navigate("/dashboard/user/profile")}
                   >
                     Update Address
