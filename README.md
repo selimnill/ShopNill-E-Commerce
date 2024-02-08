@@ -1,1 +1,1 @@
-MEARN Stack Ecommerce web app
+MERN Stack Ecommerce web app
