@@ -3,14 +3,12 @@ import { NavLink, Link } from "react-router-dom";
 import { BsFillHandbagFill } from "react-icons/bs";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
-import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { MdShoppingCart } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 import { BiSolidCategoryAlt } from "react-icons/bi";
-import { themeChange } from "theme-change";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
@@ -47,7 +45,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="navbar bg-base-100 sticky-top">
+      <div className="navbar bg-base-100 sticky-top max-w-full ">
         <div className=" ">
           <div className="dropdown">
             <div

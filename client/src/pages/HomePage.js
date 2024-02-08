@@ -10,8 +10,7 @@ import SearchInput from "../components/Form/SearchInput";
 import Banner from "../components/Banner/Banner";
 import { IoMdStar, IoMdStarHalf } from "react-icons/io";
 import useCategory from "../hooks/useCategory";
-import { FaCartPlus, FaEye, FaStar } from "react-icons/fa";
-import { BsStarHalf } from "react-icons/bs";
+import { FaCartPlus, FaEye } from "react-icons/fa";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -133,14 +132,14 @@ const HomePage = () => {
     <Layout title={"Home - ShopNill Store"} className="dark:bg-black">
       <div className="grid grid-cols-4 ">
         <div className="">
-          <div className="flex-col sticky top-24">
+          <div className="flex-col sticky top-24 border-r-2 border-indigo-600">
             <h2 className="text-center font-bold mb-4 mt-4">
               Filter By Category
             </h2>
             <div className="flex flex-col w-full mt-[-30px]">
               <div className="divider divider-primary"></div>
             </div>
-            <div className="flex flex-column ml-5">
+            <div className="flex flex-column ml-5 lg:w-64">
               {categories?.map((c) => (
                 <Checkbox
                   className="p-1 hover:bg-indigo-700 hover:pl-4 hover:transition-all hover:p-2 hover:ml-4 hover:translate-x-2 hover:text-white hover:rounded"
@@ -183,17 +182,17 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-3">
-          <div className="mt-10 w-full mb-10">
+        <div className="col-span-3 ml-1">
+          <div className="mt-10 max-w-[1024px] mb-10">
             <SearchInput />
           </div>
           <div className="Banner">
             <Banner />
           </div>
-          <div className="categories mt-72 grid grid-cols-5 gap-2 cursor-pointer ">
+          <div className="categories mt-72 grid grid-cols-5 gap-0 cursor-pointer max-w-[1000px] ">
             {category?.map((c) => (
               <>
-                <div className="h-24 w-36 text-center p-1 rounded bg-indigo-900 text-white pointer-event hover:bg-indigo-700 mt-4 flex justify-center items-center">
+                <div className="h-24 w-36 text-center p-1 rounded text-indigo-700 hover:bg-indigo-900  font-bold border-2 border-indigo-700 pointer-event bg-white  mt-4 flex justify-center items-center">
                   <Link to={`/category/${c?.slug}`}>
                     <h3 className="text-lg"> {c?.name}</h3>
                   </Link>
@@ -202,7 +201,7 @@ const HomePage = () => {
             ))}
           </div>
           <h1 className="ml-5 font-bold mb-3 mt-7">Products</h1>
-          <div className="flex flex-wrap gap-2 justify-center ">
+          <div className="flex flex-wrap gap-2 justify-center max-w-[1024px]">
             {products.map((p) => (
               <div className=" h-[340px] w-64 mt-6  cursor-pointer hover:border-indigo-600">
                 <figure className="px-10 pt-10 ">
