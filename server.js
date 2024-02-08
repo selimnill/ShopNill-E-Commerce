@@ -8,12 +8,16 @@ import authRoutes from "./routes/authRoute.js";
 import CategoryRoutes from "./routes/CategoryRoute.js";
 import ProductRoutes from "./routes/ProductRoutes.js";
 import path from "path";
-
+import {fileURLToPath} from 'url;
 //configure env
 dotenv.config();
 
 //databse config
 connectDB();
+
+// es module fix
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //rest object
 const app = express();
