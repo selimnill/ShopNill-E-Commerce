@@ -8,7 +8,7 @@ import authRoutes from "./routes/authRoute.js";
 import CategoryRoutes from "./routes/CategoryRoute.js";
 import ProductRoutes from "./routes/ProductRoutes.js";
 import path from "path";
-import {fileURLToPath} from 'url';
+import { fileURLToPath } from "url";
 //configure env
 dotenv.config();
 
@@ -35,7 +35,7 @@ app.use("/api/v1/product", ProductRoutes);
 
 //rest api
 app.use("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+  res.sendFile(path.join(__dirname, "./client/build", "index.html"));
 });
 
 //PORT
