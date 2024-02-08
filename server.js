@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import CategoryRoutes from "./routes/CategoryRoute.js";
 import ProductRoutes from "./routes/ProductRoutes.js";
+import path from "path";
 
 //configure env
 dotenv.config();
@@ -21,6 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+app.use(express.static(path.join(__dirname, "./client/build"))); // one type of connect frontend using express static path
 
 //routes
 app.use("/api/v1/auth", authRoutes);
@@ -28,8 +30,8 @@ app.use("/api/v1/category", CategoryRoutes);
 app.use("/api/v1/product", ProductRoutes);
 
 //rest api
-app.get("/", (req, res) => {
-  res.send("<h1>Welcome to ecommerce app</h1>");
+app.use("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
 //PORT

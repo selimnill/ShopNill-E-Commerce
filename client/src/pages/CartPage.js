@@ -100,7 +100,6 @@ const CartPage = () => {
         const updatedQuantity = item.quantity > 1 ? item.quantity - 1 : 1;
         return { ...item, quantity: updatedQuantity };
       }
-      console.log(updatedCart);
       return item;
     });
     setCart(updatedCart);

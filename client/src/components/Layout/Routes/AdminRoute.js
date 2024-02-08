@@ -14,7 +14,6 @@ const AdminRoute = () => {
       );
       if (res.data.ok) {
         setOk(true);
-        console.log(res.data.ok);
       } else {
         setOk(false);
       }

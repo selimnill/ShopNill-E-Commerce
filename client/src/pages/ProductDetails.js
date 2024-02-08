@@ -59,7 +59,6 @@ const ProductDetails = () => {
     }
   };
 
-  console.log(price);
   return (
     <Layout title={"Product Details - ShopNill Store"}>
       <div className="text-sm breadcrumbs bg-indigo-200 w-full h-9">
@@ -130,7 +129,6 @@ const ProductDetails = () => {
                   "cart",
                   JSON.stringify([...cart, product])
                 );
-                console.log(cart);
                 toast.success("Product Added To Cart");
               }}
             >

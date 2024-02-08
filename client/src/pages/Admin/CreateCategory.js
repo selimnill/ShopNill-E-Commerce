@@ -84,7 +84,6 @@ const CreateCategory = () => {
       );
       if (data?.success) {
         toast.success(`${name} is deleted`);
-        console.log(name);
         allCategory();
       } else {
         toast.error(data?.message);
