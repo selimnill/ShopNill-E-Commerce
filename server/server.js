@@ -46,6 +46,10 @@ app.use("/api/v1/product", ProductRoutes);
 //   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 // });
 
+app.use("/", (req, res) => {
+  res.send("Server is Running on port 9000");
+});
+
 app.get("/", (req, res) => {
   res.send("Server running.!");
 });
