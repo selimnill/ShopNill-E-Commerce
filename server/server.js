@@ -26,7 +26,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
-// app.use(express.static(path.join(__dirname, "./client/build"))); // one type of connect frontend using express static path
+app.use(express.static(path.join(__dirname, "./client/build"))); // one type of connect frontend using express static path
 // Serve static files from the client build directory
 // app.use(express.static(path.join(__dirname, "client", "build", "index.html")));
 
@@ -36,9 +36,12 @@ app.use("/api/v1/category", CategoryRoutes);
 app.use("/api/v1/product", ProductRoutes);
 
 //rest api
-// app.use("*", function (req, res) {
-//   res.sendFile(path.join(__dirname, "./client/build/index.html"));
+// app.use('*', function (req, res) {
+//   res.sendFile(path.join(__dirname, "./client/build"));
 // });
+app.use("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
 
 //
 // Fallback route to serve the index.html file
@@ -46,9 +49,9 @@ app.use("/api/v1/product", ProductRoutes);
 //   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 // });
 
-app.use("/", (req, res) => {
-  res.send("Server is Running on port 9000");
-});
+// app.use("/", (req, res) => {
+//   res.send("Server is Running on port 9000");
+// });
 
 app.get("/", (req, res) => {
   res.send("Server running.!");
